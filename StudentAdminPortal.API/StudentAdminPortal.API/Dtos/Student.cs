@@ -1,4 +1,4 @@
-﻿namespace StudentAdminPortal.API.Entities
+﻿namespace StudentAdminPortal.API.Dtos
 {
     public class Student
     {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudentAdminPortal.API.Infrastructure;
 
@@ -11,9 +12,10 @@ using StudentAdminPortal.API.Infrastructure;
 namespace StudentAdminPortal.API.Migrations
 {
     [DbContext(typeof(StudentAdminContext))]
-    partial class StudentAdminContextModelSnapshot : ModelSnapshot
+    [Migration("20220402132112_Set_Nullable_Fields")]
+    partial class Set_Nullable_Fields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,13 +36,7 @@ namespace StudentAdminPortal.API.Migrations
                     b.Property<string>("PostalAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("StudentId")
-                        .IsUnique();
 
                     b.ToTable("Address");
                 });
@@ -64,6 +60,9 @@ namespace StudentAdminPortal.API.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateOfBirth")
@@ -91,34 +90,36 @@ namespace StudentAdminPortal.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
                     b.HasIndex("GenderId");
 
                     b.ToTable("Student");
                 });
 
-            modelBuilder.Entity("StudentAdminPortal.API.Entities.Address", b =>
-                {
-                    b.HasOne("StudentAdminPortal.API.Entities.Student", null)
-                        .WithOne("Address")
-                        .HasForeignKey("StudentAdminPortal.API.Entities.Address", "StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("StudentAdminPortal.API.Entities.Student", b =>
                 {
+                    b.HasOne("StudentAdminPortal.API.Entities.Address", "Address")
+                        .WithOne("Student")
+                        .HasForeignKey("StudentAdminPortal.API.Entities.Student", "AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("StudentAdminPortal.API.Entities.Gender", "Gender")
                         .WithMany()
                         .HasForeignKey("GenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Address");
+
                     b.Navigation("Gender");
                 });
 
-            modelBuilder.Entity("StudentAdminPortal.API.Entities.Student", b =>
+            modelBuilder.Entity("StudentAdminPortal.API.Entities.Address", b =>
                 {
-                    b.Navigation("Address")
+                    b.Navigation("Student")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
