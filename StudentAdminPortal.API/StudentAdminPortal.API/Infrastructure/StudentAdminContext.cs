@@ -10,7 +10,7 @@ namespace StudentAdminPortal.API.Infrastructure
         }
 
         public DbSet<Student> Students { get; set; }
-        public DbSet<Student> Addresses { get; set; }
-        public DbSet<Student> Genders { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<Gender> Genders { get; set; }
     }
 }

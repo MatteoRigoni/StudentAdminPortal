@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using StudentAdminPortal.API.Dtos;
 using StudentAdminPortal.API.Entities;
 using StudentAdminPortal.API.Repositories;
 using Swashbuckle.AspNetCore.Annotations;
@@ -20,11 +21,35 @@ namespace StudentAdminPortal.API.Controllers
 
         [HttpGet]
         [Route("[controller]")]
-        [SwaggerOperation(Summary = "Returns all student with gender, address info")]
+        [SwaggerOperation(Summary = "Returns all student")]
         public async Task<ActionResult<List<Dtos.Student>>> GetAllStudents()
         {
             var students = await _studentRepo.GetStudents();
             return Ok(_mapper.Map<List<Dtos.Student>>(students));
+        }
+
+        [HttpGet]
+        [Route("[controller]/{id:guid}")]
+        [SwaggerOperation(Summary = "Returns a student by id")]
+        public async Task<ActionResult<Dtos.Student>> GetStudentById([FromRoute] Guid id)
+        {
+            var student = await _studentRepo.GetStudentById(id);
+            if (student == null) return NotFound();
+            return Ok(_mapper.Map<Dtos.Student>(student));
+        }
+
+        [HttpPut]
+        [Route("[controller]/{id:guid}")]
+        public async Task<ActionResult<Dtos.Student>> UpdateStudent([FromRoute] Guid id, [FromBody] UpdateStudentRequest request)
+        {
+            if (await _studentRepo.ExistsStudentById(id))
+            {
+                var updatedStudent = await _studentRepo.UpdateStudent(id, _mapper.Map<Entities.Student>(request));
+
+                if (updatedStudent != null)
+                    return Ok(_mapper.Map<Dtos.Student>(updatedStudent));
+            }
+            return NotFound();
         }
     }
 }

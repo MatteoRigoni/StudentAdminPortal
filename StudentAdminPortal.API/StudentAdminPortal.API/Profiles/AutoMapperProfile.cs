@@ -9,6 +9,9 @@ namespace StudentAdminPortal.API.Profiles
             CreateMap<Entities.Student, Dtos.Student>().ReverseMap();
             CreateMap<Entities.Gender, Dtos.Gender>().ReverseMap();
             CreateMap<Entities.Address, Dtos.Address>().ReverseMap();
+
+            CreateMap<Dtos.UpdateStudentRequest, Entities.Student>()
+                .AfterMap<UpdateStudentRequestAfterMap>();
         }        
     }
 }

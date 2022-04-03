@@ -1,4 +1,4 @@
-import { StudentService } from "./student.service";
+import { StudentService } from "../services/student.service";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Student } from "../models/ui/student.model";
 import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
@@ -10,7 +10,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from "@angular/material";
 })
 export class StudentsComponent implements OnInit {
   students: Student[];
-  displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'email', 'mobile', 'gender'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'dateOfBirth', 'email', 'mobile', 'gender', 'edit'];
   dataSource: MatTableDataSource<Student> = new MatTableDataSource<Student>();
   filterString = '';
 
