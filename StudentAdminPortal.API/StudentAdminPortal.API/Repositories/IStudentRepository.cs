@@ -9,5 +9,6 @@ namespace StudentAdminPortal.API.Repositories
         Task<List<Gender>> GetGenders();
         Task<bool> ExistsStudentById(Guid id);
         Task<Student> UpdateStudent(Guid id, Student request);
+        Task<Student> DeleteStudent(Guid id);
     }
 }

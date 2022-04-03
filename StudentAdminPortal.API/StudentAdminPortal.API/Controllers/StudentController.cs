@@ -40,6 +40,7 @@ namespace StudentAdminPortal.API.Controllers
 
         [HttpPut]
         [Route("[controller]/{id:guid}")]
+        [SwaggerOperation(Summary = "Update existing student")]
         public async Task<ActionResult<Dtos.Student>> UpdateStudent([FromRoute] Guid id, [FromBody] UpdateStudentRequest request)
         {
             if (await _studentRepo.ExistsStudentById(id))
@@ -48,6 +49,21 @@ namespace StudentAdminPortal.API.Controllers
 
                 if (updatedStudent != null)
                     return Ok(_mapper.Map<Dtos.Student>(updatedStudent));
+            }
+            return NotFound();
+        }
+
+        [HttpDelete]
+        [Route("[controller]/{id:guid}")]
+        [SwaggerOperation(Summary = "Delete existing student")]
+        public async Task<IActionResult> DeleteStudent([FromRoute] Guid id)
+        {
+            if (await _studentRepo.ExistsStudentById(id))
+            {
+                var deletedStudent = await _studentRepo.DeleteStudent(id);
+
+                if (deletedStudent != null)
+                    return NoContent();
             }
             return NotFound();
         }

@@ -13,6 +13,18 @@ namespace StudentAdminPortal.API.Infrastructure
             _dbContext = dbContext;
         }
 
+        public async Task<Student> DeleteStudent(Guid id)
+        {
+            var student = _dbContext.Students.Single(s => s.Id == id);
+            if (student != null)
+            {
+                _dbContext.Students.Remove(student);
+                await _dbContext.SaveChangesAsync();
+                return student;
+            }
+            return null;
+        }
+
         public async Task<bool> ExistsStudentById(Guid id)
         {
             return await _dbContext.Students.AnyAsync(s => s.Id == id);
