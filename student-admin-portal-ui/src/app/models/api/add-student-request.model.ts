@@ -1,4 +1,4 @@
-export interface UpdateStudentRequest {
+export interface AddStudentRequest {
   firstName: string,
   lastName: string,
   dateOfBirth: string,

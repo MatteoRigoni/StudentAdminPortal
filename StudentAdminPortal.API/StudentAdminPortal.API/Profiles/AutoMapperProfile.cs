@@ -12,6 +12,9 @@ namespace StudentAdminPortal.API.Profiles
 
             CreateMap<Dtos.UpdateStudentRequest, Entities.Student>()
                 .AfterMap<UpdateStudentRequestAfterMap>();
+
+            CreateMap<Dtos.AddStudentRequest, Entities.Student>()
+                .AfterMap<AddStudentRequestAfterMap>();
         }        
     }
 }

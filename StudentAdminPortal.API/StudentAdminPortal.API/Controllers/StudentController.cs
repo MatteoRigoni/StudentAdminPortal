@@ -29,7 +29,7 @@ namespace StudentAdminPortal.API.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/{id:guid}")]
+        [Route("[controller]/{id:guid}"), ActionName("GetStudentById")]
         [SwaggerOperation(Summary = "Returns a student by id")]
         public async Task<ActionResult<Dtos.Student>> GetStudentById([FromRoute] Guid id)
         {
@@ -66,6 +66,16 @@ namespace StudentAdminPortal.API.Controllers
                     return NoContent();
             }
             return NotFound();
+        }
+
+        [HttpPost]
+        [Route("[controller]/Add")]
+        [SwaggerOperation(Summary = "Insert a new student")]
+        public async Task<ActionResult<Dtos.Student>> AddStudent([FromBody] AddStudentRequest request)
+        {
+            var createdStudent = await _studentRepo.AddStudent(_mapper.Map<Entities.Student>(request));
+            return CreatedAtAction("GetStudentById", new { id = createdStudent.Id },
+                _mapper.Map<Dtos.Student>(createdStudent));
         }
     }
 }

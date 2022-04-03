@@ -13,6 +13,13 @@ namespace StudentAdminPortal.API.Infrastructure
             _dbContext = dbContext;
         }
 
+        public async Task<Student> AddStudent(Student request)
+        {
+            var createdStudent = await _dbContext.Students.AddAsync(request);
+            await _dbContext.SaveChangesAsync();
+            return createdStudent.Entity;
+        }
+
         public async Task<Student> DeleteStudent(Guid id)
         {
             var student = _dbContext.Students.Single(s => s.Id == id);

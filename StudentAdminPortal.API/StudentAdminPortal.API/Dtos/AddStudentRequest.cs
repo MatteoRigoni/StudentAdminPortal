@@ -1,6 +1,6 @@
 ﻿namespace StudentAdminPortal.API.Dtos
 {
-    public class UpdateStudentRequest
+    public class AddStudentRequest
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
