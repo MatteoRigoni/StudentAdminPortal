@@ -58,6 +58,18 @@ namespace StudentAdminPortal.API.Infrastructure
                 .ToListAsync();
         }
 
+        public async Task<bool> UpdateProfileImage(Guid studentId, string profileImageUrl)
+        {
+            var student = await _dbContext.Students.SingleOrDefaultAsync(s => s.Id == studentId);
+            if (student != null)
+            {
+                student.ProfileImage = profileImageUrl;
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
         public async Task<Student> UpdateStudent(Guid id, Student request)
         {
             var existingStudent = await GetStudentById(id);

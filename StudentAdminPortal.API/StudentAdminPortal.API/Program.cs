@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using StudentAdminPortal.API.Infrastructure;
 using StudentAdminPortal.API.Repositories;
 
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<StudentAdminContext>(options => options.UseSqlServ
     builder.Configuration.GetConnectionString("StudentAdminPortalDb")));
 
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddSingleton<IImageRepository, LocalImageRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -42,6 +44,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(app.Environment.ContentRootPath, "Resources")),
+    RequestPath = "/Resources"
+});
 
 app.UseCors("angularApplication");
 

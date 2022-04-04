@@ -17,6 +17,7 @@ export class ViewStudentComponent implements OnInit {
   genderList: Gender[] = [];
   isNewStudent = false;
   header = '';
+  displayProfileImageUrl = '';
 
   constructor(
     private studentService: StudentService,
@@ -31,10 +32,12 @@ export class ViewStudentComponent implements OnInit {
       this.studentId = params.get("id");
 
       if (this.studentId) {
+
         if (this.studentId.toLowerCase() === "Add".toLowerCase()) {
           this.isNewStudent = true;
           this.header = 'Add New Student';
           this.student = new StudentObj();
+          this.setImage(undefined);
         } else {
           this.isNewStudent = false;
           this.header = 'Edit Student';
@@ -42,9 +45,10 @@ export class ViewStudentComponent implements OnInit {
           this.studentService.getStudent(this.studentId).subscribe(
             (res) => {
               this.student = res;
-              console.log(this.student);
+              this.setImage(this.student.profileImage);
             },
             (err) => {
+              this.setImage(undefined);
               console.log(err);
             }
           );
@@ -107,5 +111,29 @@ export class ViewStudentComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  setImage(imagePath: string) {
+    if(imagePath) {
+      this.displayProfileImageUrl = this.studentService.getImagePath(this.student.profileImage);
+    } else {
+      this.displayProfileImageUrl = "/assets/images/user.png";
+    }
+  }
+
+  uploadImage(event: any) {
+    if (this.studentId) {
+      const file: File = event.target.files[0];
+
+      this.studentService.uploadImage(this.studentId, file).subscribe((res) => {
+        this.student.profileImage = res;
+
+        this.snackbar.open("Profile image updated succesfully", undefined, {
+          duration: 1000,
+        });
+      }, (err) => {
+        console.log(err);
+      })
+    }
   }
 }
