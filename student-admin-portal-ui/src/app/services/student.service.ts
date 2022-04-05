@@ -1,3 +1,4 @@
+import { environment } from './../../environments/environment';
 import { AddStudentRequest } from './../models/api/add-student-request.model';
 import { UpdateStudentRequest } from './../models/api/update-student-request.model';
 import { HttpClient } from "@angular/common/http";
@@ -9,7 +10,7 @@ import { Student } from "../models/api/student.model";
   providedIn: "root",
 })
 export class StudentService {
-  private baseApiUrl = "https://localhost:7180";
+  private baseApiUrl = environment.baseApiUrl;
 
   //private readonly items$: BehaviorSubject<Student[]> = new BehaviorSubject<Student[]>([]);
 
